@@ -23,13 +23,14 @@ def generate_hd_image(
     if not prompt:
         raise ValueError("Prompt is required for image generation")
     
-    ## Build request data with only provided parameters
+    # Build request data with only provided parameters
     data = {
         "prompt": prompt,
         "num_results": max(1, min(num_results, 4)),
         "sync": sync,
-        "negetive_prompts": negative_prompt
+        "negative_prompt": negative_prompt
     }
+    
     # Add optional parameters only if they have valid values
     if aspect_ratio:
         data["aspect_ratio"] = aspect_ratio
@@ -49,13 +50,14 @@ def generate_hd_image(
         data["content_moderation"] = content_moderation
     if ip_signal:
         data["ip_signal"] = ip_signal
-        
+    
     url = f"https://engine.prod.bria-api.com/v1/text-to-image/hd/{model_version}"
     headers = {
         'api_token': api_key,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
+    
     try:
         print(f"Making request to: {url}")
         print(f"Headers: {headers}")
@@ -69,5 +71,4 @@ def generate_hd_image(
         return response.json()
         
     except Exception as e:
-        raise Exception(f"HD image generation failed: {str(e)}")
-    
+        raise Exception(f"HD image generation failed: {str(e)}") 
